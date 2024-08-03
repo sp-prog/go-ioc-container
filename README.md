@@ -39,7 +39,14 @@
 
 Поэтому, для установки необходимо сделать это:
 
-import "github.com/sp-prog/go-ioc-container"
+Подключиить "конструкторы", а если точнее, то пропроксированные конструкторы:
+import "github.com/sp-prog/go-ioc-container/pkg/constructors"
+
+Подключиить "методы расширения":
+import "github.com/sp-prog/go-ioc-container/pkg/extensions"
+
+Подключить интерфейсы
+import "github.com/sp-prog/go-ioc-container/pkg/interfaces"
 
 # Подключение пакета к проекту
 
