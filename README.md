@@ -39,14 +39,21 @@
 
 Поэтому, все свалено в буржуйский репозиторий, а для установки необходимо сделать эти богомерзкие манипуляции еретиков:
 
-Подключиить "конструкторы", а если точнее, то пропроксированные конструкторы:
-import "github.com/sp-prog/go-ioc-container/pkg/constructors"
+Установить пакет:
 
-Подключиить "методы расширения":
-import "github.com/sp-prog/go-ioc-container/pkg/extensions"
+`эgo install github.com/sp-prog/go-ioc-container`
 
-Подключить интерфейсы
-import "github.com/sp-prog/go-ioc-container/pkg/interfaces"
+Подключить "конструкторы", а если точнее, то пропроксированные конструкторы:
+
+`import "github.com/sp-prog/go-ioc-container/pkg/constructors"`
+
+Подключить "методы расширения":
+
+`import "github.com/sp-prog/go-ioc-container/pkg/extensions"`
+
+Подключить интерфейсы:
+
+`import "github.com/sp-prog/go-ioc-container/pkg/interfaces"`
 
 # Подключение пакета к проекту
 
