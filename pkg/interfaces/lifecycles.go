@@ -1,4 +1,4 @@
-package type_factory
+package interfaces
 
 type Lifecycle int
 
