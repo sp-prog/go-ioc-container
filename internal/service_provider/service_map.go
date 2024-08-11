@@ -1,4 +1,4 @@
-package type_factory
+package service_provider
 
 import (
 	"reflect"
@@ -6,6 +6,6 @@ import (
 
 type ServiceMap map[reflect.Type]reflect.Value
 
-func NewServiceMap() ServiceMap {
+func (*ServiceMap) New() ServiceMap {
 	return make(ServiceMap)
 }
