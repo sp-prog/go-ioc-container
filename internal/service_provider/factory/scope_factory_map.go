@@ -35,19 +35,19 @@ func (sfm *ScopeFactoryMap) SetFactoryInfo(
 	)
 }
 
-func (fm *ScopeFactoryMap) GetFactoryInfo(
+func (sfm *ScopeFactoryMap) GetFactoryInfo(
 	target interface{},
 ) (IScopeFactoryInfo, bool) {
 	targetValue := reflect.ValueOf(target)
 	serviceType := targetValue.Elem().Type()
 
-	return fm.GetFactoryInfoReflectType(serviceType)
+	return sfm.GetFactoryInfoReflectType(serviceType)
 }
 
-func (fm *ScopeFactoryMap) GetFactoryInfoReflectType(
+func (sfm *ScopeFactoryMap) GetFactoryInfoReflectType(
 	reflectType reflect.Type,
 ) (IScopeFactoryInfo, bool) {
-	binding, found := fm.factoryInfo[reflectType]
+	binding, found := sfm.factoryInfo[reflectType]
 
 	return binding, found
 }

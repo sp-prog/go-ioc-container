@@ -20,7 +20,7 @@ func (cm *contextMocked) fakeFunc() string {
 	return ""
 }
 
-// Проверка метода добавления зависимости с областью жизни Transient
+// Проверка конструктора и многопоточного вызова метода-конструктора зависимости
 func TestScopeFactoryInfoNew(t *testing.T) {
 	//Test data
 	funcName := "fakeFunc"

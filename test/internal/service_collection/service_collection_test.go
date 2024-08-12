@@ -46,7 +46,7 @@ func TestServiceCollectionAddTransient(t *testing.T) {
 	)
 }
 
-// Проверка метода добавления зависимости с областью жизни Transient
+// Проверка метода добавления зависимости с областью жизни Scoped
 func TestServiceCollectionAddScoped(t *testing.T) {
 	//Test data
 	f := func() string { return "" }
@@ -69,7 +69,7 @@ func TestServiceCollectionAddScoped(t *testing.T) {
 	)
 }
 
-// Проверка метода добавления зависимости с областью жизни Transient
+// Проверка метода добавления зависимости с областью жизни Singleton
 func TestServiceCollectionAddSingleton(t *testing.T) {
 	//Test data
 	f := func() string { return "" }
@@ -92,7 +92,7 @@ func TestServiceCollectionAddSingleton(t *testing.T) {
 	)
 }
 
-// Проверка метода добавления зависимости с областью жизни Transient
+// Проверка возникновения ошибки при попытке зарегистировать не-метод
 func TestServiceCollectionNotFunction(t *testing.T) {
 	//Test data
 	var f struct{}
