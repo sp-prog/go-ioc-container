@@ -1,8 +1,9 @@
 package factory
 
 import (
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 	"reflect"
+
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 )
 
 type ScopeFactoryMap struct {
@@ -21,7 +22,6 @@ func (sfm *ScopeFactoryMap) SetFactoryInfo(
 	if factoryInfo.Lifecycle() == interfaces.Transient {
 		sfm.factoryInfo[factoryInfo.ObjectType()] = (*TransientFactoryInfo)(nil).New(
 			factoryInfo.FactoryFunc(),
-			factoryInfo.Lifecycle(),
 			factoryInfo.ObjectType(),
 		)
 
