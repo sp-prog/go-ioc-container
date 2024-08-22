@@ -23,7 +23,7 @@ func (sp *ServiceProvider) Build(sc interfaces.IServiceCollection) {
 }
 
 func (sp *ServiceProvider) GetService(target interface{}) (err error) {
-	if fi, exists := sp.scopeFactoryMap.GetFactoryInfo(target); exists && fi.Lifecycle() == interfaces.Singleton {
+	!!!!!!!if fi, exists := sp.scopeFactoryMap.GetFactoryInfo(target); exists && fi.Lifecycle() == interfaces.Singleton {
 		return sp.rootProvider.GetService(target)
 	}
 

@@ -1,8 +1,9 @@
 package factory
 
 import (
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 	"reflect"
+
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 )
 
 type TransientFactoryInfo struct {
@@ -25,12 +26,11 @@ func (i *TransientFactoryInfo) FactoryFunc() reflect.Value {
 
 func (*TransientFactoryInfo) New(
 	factoryFunc reflect.Value,
-	lifecycle interfaces.Lifecycle,
 	objectType reflect.Type,
 ) IScopeFactoryInfo {
 	return &TransientFactoryInfo{
 		factoryFunc: factoryFunc,
-		lifecycle:   lifecycle,
+		lifecycle:   interfaces.Transient,
 		objectType:  objectType,
 	}
 }

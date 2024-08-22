@@ -1,8 +1,9 @@
 package factory
 
 import (
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 	"reflect"
+
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 )
 
 type ScopeFactoryMap struct {
@@ -21,7 +22,6 @@ func (sfm *ScopeFactoryMap) SetFactoryInfo(
 	if factoryInfo.Lifecycle() == interfaces.Transient {
 		sfm.factoryInfo[factoryInfo.ObjectType()] = (*TransientFactoryInfo)(nil).New(
 			factoryInfo.FactoryFunc(),
-			factoryInfo.Lifecycle(),
 			factoryInfo.ObjectType(),
 		)
 
@@ -35,19 +35,19 @@ func (sfm *ScopeFactoryMap) SetFactoryInfo(
 	)
 }
 
-func (fm *ScopeFactoryMap) GetFactoryInfo(
+func (sfm *ScopeFactoryMap) GetFactoryInfo(
 	target interface{},
 ) (IScopeFactoryInfo, bool) {
 	targetValue := reflect.ValueOf(target)
 	serviceType := targetValue.Elem().Type()
 
-	return fm.GetFactoryInfoReflectType(serviceType)
+	return sfm.GetFactoryInfoReflectType(serviceType)
 }
 
-func (fm *ScopeFactoryMap) GetFactoryInfoReflectType(
+func (sfm *ScopeFactoryMap) GetFactoryInfoReflectType(
 	reflectType reflect.Type,
 ) (IScopeFactoryInfo, bool) {
-	binding, found := fm.factoryInfo[reflectType]
+	binding, found := sfm.factoryInfo[reflectType]
 
 	return binding, found
 }

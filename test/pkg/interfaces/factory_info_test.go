@@ -1,10 +1,11 @@
 package interfaces
 
 import (
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
-	"github.com/stretchr/testify/assert"
 	"reflect"
 	"testing"
+
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
+	"github.com/stretchr/testify/assert"
 )
 
 // Проверка работы конструктора
@@ -39,17 +40,17 @@ func TestFactoryFunc(t *testing.T) {
 func TestLifecycle(t *testing.T) {
 
 	//Test data
-	lifetime := interfaces.Singleton
+	lifecycle := interfaces.Singleton
 
 	//Action
 	res := (*interfaces.FactoryInfo)(nil).New(
 		reflect.Value{},
-		lifetime,
+		lifecycle,
 		nil,
 	)
 
 	//Validate
-	assert.Equal(t, lifetime, res.Lifecycle())
+	assert.Equal(t, lifecycle, res.Lifecycle())
 }
 
 // Проверка получения области жизни

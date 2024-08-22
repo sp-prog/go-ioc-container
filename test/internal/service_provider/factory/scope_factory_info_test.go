@@ -1,13 +1,15 @@
 package factory
 
 import (
-	"github.com/brianvoe/gofakeit"
-	"github.com/sp-prog/go-ioc-container/internal/service_provider/factory"
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
-	"github.com/stretchr/testify/mock"
 	"reflect"
 	"sync"
 	"testing"
+
+	"github.com/brianvoe/gofakeit"
+	"github.com/sp-prog/go-ioc-container/internal/service_provider/factory"
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 type contextMocked struct {
@@ -20,8 +22,24 @@ func (cm *contextMocked) fakeFunc() string {
 	return ""
 }
 
-// Проверка метода добавления зависимости с областью жизни Transient
-func TestScopeFactoryInfoNew(t *testing.T) {
+func TestScopeFactoryInfoAndNewThenCreated(t *testing.T) {
+	//Test data
+
+	//Action
+	res := (*factory.ScopeFactoryInfo)(nil).New(
+		reflect.ValueOf(func() string {
+			return ""
+		}),
+		interfaces.Singleton,
+		reflect.TypeOf(""),
+	)
+
+	//Validate
+	assert.NotNil(t, res)
+}
+
+// Проверка конструктора и многопоточного вызова метода-конструктора зависимости
+func TestScopeFactoryInfoAndGoCallThenCallOnce(t *testing.T) {
 	//Test data
 	funcName := "fakeFunc"
 	grCount := gofakeit.Number(1, 1000)
