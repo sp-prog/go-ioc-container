@@ -1,18 +1,19 @@
 package interfaces
 
 import (
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces/service/collection"
+	"github.com/sp-prog/go-ioc-container/pkg/interfaces/service/factory"
 	"reflect"
 	"testing"
 
-	"github.com/sp-prog/go-ioc-container/pkg/interfaces"
 	"github.com/stretchr/testify/assert"
 )
 
 // Проверка работы конструктора
 func TestFactoryInfoNew(t *testing.T) {
-	res := (*interfaces.FactoryInfo)(nil).New(
+	res := (*collection.FactoryInfo)(nil).New(
 		reflect.Value{},
-		interfaces.Singleton,
+		factory.Singleton,
 		nil,
 	)
 
@@ -26,9 +27,9 @@ func TestFactoryFunc(t *testing.T) {
 	factoryFunc := reflect.Value{}
 
 	//Action
-	res := (*interfaces.FactoryInfo)(nil).New(
+	res := (*collection.FactoryInfo)(nil).New(
 		factoryFunc,
-		interfaces.Singleton,
+		factory.Singleton,
 		nil,
 	)
 
@@ -40,10 +41,10 @@ func TestFactoryFunc(t *testing.T) {
 func TestLifecycle(t *testing.T) {
 
 	//Test data
-	lifecycle := interfaces.Singleton
+	lifecycle := factory.Singleton
 
 	//Action
-	res := (*interfaces.FactoryInfo)(nil).New(
+	res := (*collection.FactoryInfo)(nil).New(
 		reflect.Value{},
 		lifecycle,
 		nil,
@@ -60,9 +61,9 @@ func TestObjectType(t *testing.T) {
 	var objectType reflect.Type = nil
 
 	//Action
-	res := (*interfaces.FactoryInfo)(nil).New(
+	res := (*collection.FactoryInfo)(nil).New(
 		reflect.Value{},
-		interfaces.Singleton,
+		factory.Singleton,
 		objectType,
 	)
 
