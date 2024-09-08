@@ -5,38 +5,12 @@ import (
 	"github.com/sp-prog/go-ioc-container/internal/service/provider"
 	icollection "github.com/sp-prog/go-ioc-container/pkg/interfaces/service/collection"
 	"github.com/sp-prog/go-ioc-container/test/extensions/testify"
-	"github.com/stretchr/testify/mock"
+	mock2 "github.com/sp-prog/go-ioc-container/test/extensions/testify/mock"
 	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-
-type icollectionMocked struct {
-	mock.Mock
-	icollection.ICollection
-}
-
-func (cm *icollectionMocked) Services() *icollection.FactoryMap {
-	args := cm.Called()
-
-	return args.Get(0).(*icollection.FactoryMap)
-}
-
-type iScopeFactoryMapMocked struct {
-	mock.Mock
-	factory2.IScopeFactoryMap
-}
-
-func (sfmm *iScopeFactoryMapMocked) New() factory2.IScopeFactoryMap {
-	args := sfmm.Called()
-
-	return args.Get(0).(factory2.IScopeFactoryMap)
-}
-
-func (sfmm *iScopeFactoryMapMocked) SetFactoryInfo(factoryInfo *icollection.FactoryInfo) {
-	sfmm.Called()
-}
 
 // Проверка работы конструктора
 func TestProviderAndNewThenNewObject(t *testing.T) {
@@ -68,21 +42,21 @@ func TestProviderAndBuildThenSuccess(t *testing.T) {
 
 	//f := func() string { return "" }
 	sfmm := iScopeFactoryMapMocked{}
-	cm := icollectionMocked{}
+	cm := iCollectionMocked{}
 	fm := (*icollection.FactoryMap)(nil).New()
 	fm.SetFactoryInfo(reflect.TypeOf(""), nil)
 
-	testify.Mock[factory2.IScopeFactoryMap, testify.FakeType]{Mock: &sfmm.Mock}.
+	mock2.MockR1[factory2.IScopeFactoryMap]{Mock: &sfmm.Mock}.
 		OnExt(sfmm.New).
-		ReturnExt1(&sfmm)
+		ReturnExt(&sfmm)
 
-	testify.Mock[factory2.IScopeFactoryMap, testify.FakeType]{Mock: &sfmm.Mock}.
+	mock2.MockR0{Mock: &sfmm.Mock}.
 		OnExt(sfmm.SetFactoryInfo).
 		Return()
 
-	testify.Mock[*icollection.FactoryMap, testify.FakeType]{Mock: &cm.Mock}.
+	mock2.MockR1[*icollection.FactoryMap]{Mock: &cm.Mock}.
 		OnExt(cm.Services).
-		ReturnExt1(fm)
+		ReturnExt(fm)
 
 	sp := (*provider.Provider)(nil).New(&sfmm)
 
@@ -107,7 +81,7 @@ func TestProviderAndBuildThenSuccess(t *testing.T) {
 //
 //	//Validate
 //	assert.PanicsWithError(t, "Cannot find service int", func() {
-//		_, _ = sp.Call(f)
+//		_, _ = sp.CallR2(f)
 //	})
 //}
 //
@@ -128,9 +102,9 @@ func TestProviderAndBuildThenSuccess(t *testing.T) {
 //		name          string
 //		lifecycleFunc func(interface{}) error
 //	}{
-//		{"test Call with Transient lifecycle", sc.AddTransient},
-//		{"test Call with Scoped lifecycle", sc.AddScoped},
-//		{"test Call with Singleton lifecycle", sc.AddSingleton},
+//		{"test CallR2 with Transient lifecycle", sc.AddTransient},
+//		{"test CallR2 with Scoped lifecycle", sc.AddScoped},
+//		{"test CallR2 with Singleton lifecycle", sc.AddSingleton},
 //	}
 //
 //	for _, testData := range testDatas {
@@ -144,7 +118,7 @@ func TestProviderAndBuildThenSuccess(t *testing.T) {
 //			sp.Build(sc)
 //
 //			//Action
-//			res, err := sp.Call(funcCall)
+//			res, err := sp.CallR2(funcCall)
 //
 //			//Validate
 //			assert.NoError(t, err)
