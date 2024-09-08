@@ -2,25 +2,17 @@ package factory
 
 import (
 	"github.com/sp-prog/go-ioc-container/internal/service/factory"
+	icollection "github.com/sp-prog/go-ioc-container/pkg/interfaces/service/collection"
 	factory2 "github.com/sp-prog/go-ioc-container/pkg/interfaces/service/factory"
+	"github.com/sp-prog/go-ioc-container/test/extensions/testify"
+	mock2 "github.com/sp-prog/go-ioc-container/test/extensions/testify/mock"
 	"reflect"
 	"sync"
 	"testing"
 
 	"github.com/brianvoe/gofakeit"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-type contextMocked struct {
-	mock.Mock
-}
-
-func (cm *contextMocked) fakeFunc() string {
-	cm.Called()
-
-	return ""
-}
 
 func TestScopeFactoryInfoAndNewThenCreated(t *testing.T) {
 	//Test data
@@ -40,18 +32,19 @@ func TestScopeFactoryInfoAndNewThenCreated(t *testing.T) {
 // Проверка конструктора и многопоточного вызова метода-конструктора зависимости
 func TestScopeFactoryInfoAndGoCallThenCallOnce(t *testing.T) {
 	//Test data
-	funcName := "fakeFunc"
 	grCount := gofakeit.Number(1, 1000)
 	wg := sync.WaitGroup{}
 
-	m := contextMocked{}
+	cm := contextMocked{}
 
 	sc := (*factory.ScopeFactoryInfo)(nil).New(
-		reflect.ValueOf(m.fakeFunc),
+		reflect.ValueOf(cm.fakeFunc),
 		factory2.Singleton,
 	)
 
-	m.On(funcName).Return("")
+	mock2.MockR1[*icollection.FactoryMap]{Mock: &cm.Mock}.
+		OnExt(cm.fakeFunc).
+		Return("")
 
 	//Action
 	wg.Add(grCount)
@@ -66,5 +59,6 @@ func TestScopeFactoryInfoAndGoCallThenCallOnce(t *testing.T) {
 	wg.Wait()
 
 	//Validate
-	m.AssertNumberOfCalls(t, funcName, 1)
+	testify.Assert{Mock: &cm.Mock}.
+		AssertNumberOfCallsEx(t, cm.fakeFunc, 1)
 }
