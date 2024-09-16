@@ -35,6 +35,10 @@ func (*TransientFactoryInfo) New(
 	}
 }
 
+func (tfi *TransientFactoryInfo) Copy() IScopeFactoryInfo {
+	return tfi.New(tfi.factoryFunc)
+}
+
 func (*TransientFactoryInfo) NewWithLifecycle(
 	factoryFunc reflect.Value,
 	lifecycle factory.Lifecycle,

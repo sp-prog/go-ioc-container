@@ -9,4 +9,5 @@ type IScopeFactoryInfo interface {
 	ObjectType() reflect.Type
 	Lifecycle() factory.Lifecycle
 	FactoryFunc() reflect.Value
+	Copy() IScopeFactoryInfo
 }

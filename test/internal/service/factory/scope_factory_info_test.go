@@ -42,7 +42,7 @@ func TestScopeFactoryInfoAndGoCallThenCallOnce(t *testing.T) {
 		factory2.Singleton,
 	)
 
-	mock2.MockR1[*icollection.FactoryMap]{Mock: &cm.Mock}.
+	(&mock2.MockR1[*icollection.FactoryMap]{Mock: &cm.Mock}).
 		OnExt(cm.fakeFunc).
 		Return("")
 
@@ -50,9 +50,9 @@ func TestScopeFactoryInfoAndGoCallThenCallOnce(t *testing.T) {
 	wg.Add(grCount)
 	for i := 0; i < grCount; i++ {
 		go func() {
-			sc.FactoryFunc().Call(nil)
+			defer wg.Done()
 
-			wg.Done()
+			sc.FactoryFunc().Call(nil)
 		}()
 	}
 
