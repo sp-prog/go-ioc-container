@@ -8,7 +8,8 @@ import (
 
 type ScopeFactoryInfo struct {
 	*TransientFactoryInfo
-	once *sync.Once
+	once         *sync.Once
+	originalFunc reflect.Value
 }
 
 func (*ScopeFactoryInfo) New(
@@ -39,5 +40,13 @@ func (*ScopeFactoryInfo) New(
 	return &ScopeFactoryInfo{
 		TransientFactoryInfo: transientFactoryInfo,
 		once:                 &once,
+		originalFunc:         factoryFunc,
 	}
+}
+
+func (sfi *ScopeFactoryInfo) Copy() IScopeFactoryInfo {
+	return sfi.New(
+		sfi.originalFunc,
+		sfi.lifecycle,
+	)
 }

@@ -1,6 +1,7 @@
 package collection
 
 import (
+	factory2 "github.com/sp-prog/go-ioc-container/internal/service/factory"
 	"github.com/sp-prog/go-ioc-container/pkg/interfaces/service/factory"
 	"reflect"
 )
@@ -33,4 +34,12 @@ func (fi *FactoryInfo) Lifecycle() factory.Lifecycle {
 
 func (fi *FactoryInfo) FactoryFunc() reflect.Value {
 	return fi.factoryFunc
+}
+
+func (fi *FactoryInfo) Copy() factory2.IScopeFactoryInfo {
+	return fi.New(
+		fi.factoryFunc,
+		fi.lifecycle,
+		fi.objectType,
+	)
 }

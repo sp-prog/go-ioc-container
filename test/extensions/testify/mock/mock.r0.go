@@ -10,7 +10,7 @@ type MockR0 struct {
 	*mock.Mock
 }
 
-func (m MockR0) OnExt(
+func (m *MockR0) OnExt(
 	funcInfo interface{},
 ) *call.CallR0 {
 	funcName := reflect.GetSimpleFuncName(funcInfo)

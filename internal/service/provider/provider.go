@@ -32,9 +32,10 @@ func (*Provider) New(
 }
 
 func (p *Provider) CreateScopedServiceProvider() provider.IProvider {
+
 	return &Provider{
 		serviceMap:      p.serviceMap.New(),
-		scopeFactoryMap: p.scopeFactoryMap,
+		scopeFactoryMap: p.scopeFactoryMap.Copy(),
 		rootProvider:    p,
 	}
 }
@@ -54,7 +55,15 @@ func (p *Provider) Build(c collection.ICollection) {
 }
 
 func (p *Provider) GetService(target interface{}) (err error) {
-	if fi, exists := p.scopeFactoryMap.GetFactoryInfo(target); exists && fi.Lifecycle() == pkgFactory.Singleton {
+	fi, exists := p.scopeFactoryMap.GetFactoryInfo(target)
+	if !exists {
+		err = errors.New("target factory not found")
+
+		return
+	}
+
+	if fi.Lifecycle() == pkgFactory.Singleton &&
+		p.rootProvider != nil {
 		return p.rootProvider.GetService(target)
 	}
 
@@ -63,8 +72,9 @@ func (p *Provider) GetService(target interface{}) (err error) {
 		targetValue.Elem().CanSet() {
 		err = p.resolveServiceFromValue(targetValue)
 	} else {
-		err = errors.New("Type cannot be used as target")
+		err = errors.New("type cannot be used as target")
 	}
+
 	return
 }
 
@@ -73,13 +83,13 @@ func (p *Provider) resolveServiceFromValue(
 ) (err error) {
 	serviceType := val.Elem().Type()
 	if factoryInfo, found := p.scopeFactoryMap.GetFactoryInfoReflectType(serviceType); found {
-		if factoryInfo.Lifecycle() == pkgFactory.Scoped {
+		if factoryInfo.Lifecycle() != pkgFactory.Transient {
 			err = p.resolveScopedService(val, factoryInfo)
 		} else {
 			val.Elem().Set(p.invokeFunction(factoryInfo.FactoryFunc())[0])
 		}
 	} else {
-		err = fmt.Errorf("Cannot find service %v", serviceType)
+		err = fmt.Errorf("cannot find service %v", serviceType)
 	}
 	return
 }

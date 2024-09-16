@@ -23,23 +23,3 @@ func TestPopulateAndNewThenCreated(t *testing.T) {
 	//Validate
 	assert.NotNil(t, res)
 }
-
-//// Проверка работы конструктора
-//func TestPopulateAndNewThenCreated(t *testing.T) {
-//	//Test data
-//	sfm := (*factory.ScopeFactoryMap)(nil).New()
-//
-//	pr := (*provider.Provider)(nil).New(sfm)
-//
-//	pr.Build()
-//
-//	pop := (*populate.Populate)(nil).New(
-//		pr,
-//	)
-//
-//	//Action
-//	err := pop.Populate()
-//
-//	//Validate
-//	assert.NoError(t, err)
-//}
